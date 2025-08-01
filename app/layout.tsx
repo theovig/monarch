@@ -23,18 +23,24 @@ initAnalytics();
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${zen.variable} ${inter.variable} ${monospace.variable}`}>
+      <html lang="en" className={`${zen.variable} ${inter.variable} ${monospace.variable}`}>
+      <head>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Zen+Kaku+Gothic+Antique&family=Zen+Kaku+Gothic+New&display=swap"
+            rel="stylesheet"
+        />
+      </head>
       <body>
-        <ThemeProviders>
-          <OnchainProviders>
-            <ClientProviders>
-              {children}
-              <RiskNotificationModal />
-            </ClientProviders>
-          </OnchainProviders>
-        </ThemeProviders>
+      <ThemeProviders>
+        <OnchainProviders>
+          <ClientProviders>
+            {children}
+            <RiskNotificationModal/>
+          </ClientProviders>
+        </OnchainProviders>
+      </ThemeProviders>
       </body>
-      <GoogleAnalytics />
-    </html>
+      <GoogleAnalytics/>
+      </html>
   );
 }
