@@ -1,6 +1,17 @@
 import { URLS } from '@/utils/urls';
 
-// Generic fetcher for Morpho API
+type GraphQLError = {
+  message: string;
+  status?: string;
+};
+
+const isIgnorableMorphoError = (error: GraphQLError): boolean => {
+  return (
+    error.message?.toLowerCase().includes('cannot find market bad debt') ||
+    error.message?.toLowerCase().includes('bad debt') // sécurité large
+  );
+};
+
 export const morphoGraphqlFetcher = async <T extends Record<string, any>>(
   query: string,
   variables: Record<string, unknown>,
@@ -15,17 +26,17 @@ export const morphoGraphqlFetcher = async <T extends Record<string, any>>(
     throw new Error('Network response was not ok from Morpho API');
   }
 
-  const result = (await response.json()) as T;
+  const result = (await response.json()) as T & { errors?: GraphQLError[] };
 
-  // Check for GraphQL errors
-  if (
-    'errors' in result &&
-    Array.isArray((result as any).errors) &&
-    (result as any).errors.length > 0
-  ) {
-    // Log the full error for debugging
-    console.error('Morpho API GraphQL Error:', result.errors);
-    throw new Error('Unknown GraphQL error from Morpho API');
+  if (Array.isArray(result.errors)) {
+    const fatalErrors = result.errors.filter((e) => !isIgnorableMorphoError(e));
+
+    if (fatalErrors.length > 0) {
+      console.error('❌ Morpho API GraphQL Fatal Errors:', fatalErrors);
+      throw new Error('Non-ignorable GraphQL error from Morpho API');
+    } else {
+      console.warn('⚠️ Morpho API Ignored Errors:', result.errors);
+    }
   }
 
   return result;
