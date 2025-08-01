@@ -2,7 +2,7 @@ import { generateMetadata } from '@/utils/generateMetadata';
 import HomePage from './home/HomePage';
 
 export const metadata = generateMetadata({
-  title: 'Monarch',
+  title: 'Odyssey',
   description: 'Customized lending with Morpho Blue',
   images: 'themes.png',
   pathname: '',
