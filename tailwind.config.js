@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import type { Config } from 'tailwindcss';
-import plugin from 'tailwindcss/plugin';
 const { nextui } = require('@nextui-org/theme');
+const plugin = require('tailwindcss/plugin');
 
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -28,11 +28,8 @@ const config: Config = {
         'gradient-2': 'linear-gradient(270deg, #f55925 0%, #D75986 100%)',
       },
       gridTemplateColumns: {
-        // Coffee column grid
         '2CoffeeLg': '1fr 380px',
         '2CoffeeMd': '1fr 330px',
-
-        // Mint colum grid
         '2mint': '420px 1fr',
       },
       colors: {
@@ -57,18 +54,18 @@ const config: Config = {
         light: {
           layout: {
             radius: {
-              small: '0.375rem', // rounded
-              medium: '0.375rem', // rounded
-              large: '0.375rem', // rounded
+              small: '0.375rem',
+              medium: '0.375rem',
+              large: '0.375rem',
             },
           },
         },
         dark: {
           layout: {
             radius: {
-              small: '0.375rem', // rounded
-              medium: '0.375rem', // rounded
-              large: '0.375rem', // rounded
+              small: '0.375rem',
+              medium: '0.375rem',
+              large: '0.375rem',
             },
           },
         },
@@ -77,11 +74,9 @@ const config: Config = {
     plugin(function ({ addBase }) {
       addBase({
         'button, .nextui-button': {
-          '@apply rounded': {}, // This makes all buttons rounded by default
+          '@apply rounded': {},
         },
       });
     }),
   ],
 };
-
-export default config;
